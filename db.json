@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Allison Hill",
-      "age": 47,
+      "age": 45,
       "city": "Brussels"
     },
     {
@@ -5999,6 +5999,78 @@
       "name": "Anna Stephens",
       "age": 70,
       "city": "Zurich"
+    },
+    {
+      "name": "Kasun Edward",
+      "age": 32,
+      "city": "Narammala",
+      "id": 1001
+    },
+    {
+      "name": "Yashodha",
+      "age": 32,
+      "city": "Colombo",
+      "id": 1002
+    },
+    {
+      "name": "Yashodha",
+      "age": 24,
+      "city": "Colombo",
+      "id": 1003
+    },
+    {
+      "name": "Ganindu",
+      "age": 20,
+      "city": "Colombo",
+      "id": 1004
+    },
+    {
+      "name": "DDDD",
+      "age": 20,
+      "city": "Colombo",
+      "id": 1005
+    },
+    {
+      "name": "EEEE",
+      "age": 20,
+      "city": "Colombo",
+      "id": 1006
+    },
+    {
+      "name": "Kasun Edward",
+      "age": 20,
+      "city": "Colombo",
+      "id": 1007
+    },
+    {
+      "name": "ABC",
+      "age": 25,
+      "city": "DDD",
+      "id": 1008
+    },
+    {
+      "name": "Kasun Edward",
+      "age": 24,
+      "city": "DDD",
+      "id": 1009
+    },
+    {
+      "name": "PPP",
+      "age": 24,
+      "city": "GGGG",
+      "id": 1010
+    },
+    {
+      "name": "BBBBB",
+      "age": 24,
+      "city": "GGGG",
+      "id": 1011
+    },
+    {
+      "name": "Kasun 1",
+      "age": 24,
+      "city": "FFF",
+      "id": 1012
     }
   ]
 }

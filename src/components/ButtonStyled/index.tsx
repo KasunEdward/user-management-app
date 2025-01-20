@@ -7,15 +7,17 @@ interface ButtonStyledProps {
   color?: "inherit" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
   children?: ReactNode;
   onClick?: () => void;
+  type?: "button" | "submit" | "reset";
 }
 
 const ButtonStyled = (props: ButtonStyledProps) => {
-  const { outlined, icon, color, children, onClick } = props;
+  const { outlined, icon, color, children, onClick, type } = props;
   return (
     <ButtonWrapper
       variant={outlined ? "outlined" : "contained"}
       color={color ? color : "info"}
       onClick={onClick}
+      type={type}
     >
       {icon}
       {children}

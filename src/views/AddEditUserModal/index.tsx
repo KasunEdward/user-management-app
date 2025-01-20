@@ -1,117 +1,139 @@
-import { Box, Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  CircularProgress,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+} from "@mui/material";
 import ButtonStyled from "../../components/ButtonStyled";
 import { CustomDialog, CustomTextField } from "./styled.component";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../services/store";
+import { useEffect, useState } from "react";
+import { addUserRequest, updateUserRequest, User } from "../../services/slices/userSlice";
 
 interface AddEditUserModalProps {
-  isEdit: boolean;
   open: boolean;
+  existingUser:User | undefined;
   handleClose: () => void;
 }
 
-const UserSchema = Yup.object({
-  name: Yup.string().required("Name is required").min(2, "Name must be at least 2 characters"),
-  age: Yup.number().required("Age is required").min(1, "Age must be positive").max(120, "Invalid age"),
-  city: Yup.string().required("City is required").min(2, "City must be at least 2 characters"),
-});
-
-// type UserFormProps = {
-//   initialValues: {
-//     name: string;
-//     age: number | "";
-//     city: string;
-//   };
-//   onSubmit: (values: { name: string; age: number; city: string }) => void;
-//   isEdit?: boolean;
-// };
-const initialValues = {
-  name:"",
-  age:"",
-  city:""
-
-}
-
 const AddEditUserModal = (props: AddEditUserModalProps) => {
-  const { open, handleClose,isEdit } = props;
-  return(
-    <CustomDialog
-      open={open}
-      onClose={handleClose}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-          event.preventDefault();
-          const formData = new FormData(event.currentTarget);
-          const formJson = Object.fromEntries((formData as any).entries());
-          const email = formJson.email;
-          console.log(email);
-          handleClose();
-        },
-      }}
-    >
+  const { open, handleClose, existingUser } = props;
+  const [submitted, setSubmitted] = useState(false);
+  const { loadingAddEdit } = useSelector((state: RootState) => state.users);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (submitted && !loadingAddEdit) {
+      setSubmitted(false); // Reset the submitted state
+      handleClose(); // Close the dialog
+    }
+  }, [submitted, loadingAddEdit, handleClose]);
+
+  const UserSchema = Yup.object({
+    name: Yup.string()
+      .required("Name is required")
+      .min(2, "Name must be at least 2 characters"),
+    age: Yup.number()
+      .required("Age is required")
+      .min(1, "Age must be positive")
+      .max(120, "Invalid age"),
+    city: Yup.string()
+      .required("City is required")
+      .min(2, "City must be at least 2 characters"),
+  });
+
+  const initialValues = existingUser??{
+    name: "",
+    age: null,
+    city: "",
+  };
+
+  const handleSubmit = (fields: User) => {
+    setSubmitted(true); // Mark the form as submitted
+    if(existingUser){
+      dispatch(updateUserRequest(fields));
+    }else{
+      dispatch(addUserRequest(fields));
+    } 
+  };
+
+  return (
+    <CustomDialog open={open} onClose={handleClose}>
       <DialogTitle>Add User</DialogTitle>
       <DialogContent>
-      <Formik
-      initialValues={initialValues}
-      validationSchema={UserSchema}
-      onSubmit={(values, { resetForm }) => {
-        // onSubmit(values);mata 
-        // if (!isEdit) resetForm();
-      }}
-    >
-      {({ errors, touched }) => (
-        <Form>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Field
-                as={CustomTextField}
-                fullWidth
-                label="Name"
-                name="name"
-                error={touched.name && Boolean(errors.name)}
-                helperText={touched.name && errors.name}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Field
-                as={CustomTextField}
-                fullWidth
-                label="Age"
-                name="age"
-                type="number"
-                error={touched.age && Boolean(errors.age)}
-                helperText={touched.age && errors.age}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Field
-                as={CustomTextField}
-                fullWidth
-                label="City"
-                name="city"
-                error={touched.city && Boolean(errors.city)}
-                helperText={touched.city && errors.city}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="flex-end" gap={2}>
-                <Button type="submit" variant="contained" color="primary">
-                  {isEdit ? "Update User" : "Add User"}
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </Form>
-      )}
-    </Formik>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={UserSchema}
+          onSubmit={(values, { resetForm }) => {
+            handleSubmit(values);
+          }}
+        >
+          {({ errors, touched }) => (
+            <Form>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Field
+                    as={CustomTextField}
+                    fullWidth
+                    label="Name"
+                    name="name"
+                    error={touched.name && Boolean(errors.name)}
+                    helperText={touched.name && errors.name}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    as={CustomTextField}
+                    fullWidth
+                    label="Age"
+                    name="age"
+                    type="number"
+                    error={touched.age && Boolean(errors.age)}
+                    helperText={touched.age && errors.age}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    as={CustomTextField}
+                    fullWidth
+                    label="City"
+                    name="city"
+                    error={touched.city && Boolean(errors.city)}
+                    helperText={touched.city && errors.city}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Box display="flex" justifyContent="flex-end" gap={2}>
+                    <ButtonStyled type="submit" color="primary">
+                      {existingUser ? "Update User" : "Add User"}
+                    </ButtonStyled>
+                    <ButtonStyled outlined onClick={handleClose}>
+                      Cancel
+                    </ButtonStyled>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Form>
+          )}
+        </Formik>
+        {loadingAddEdit && (
+          <Backdrop
+            sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+            open={loadingAddEdit}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        )}
       </DialogContent>
-      <DialogActions>
-        <ButtonStyled onClick={handleClose}>Cancel</ButtonStyled>
-        <Button type="submit">Subscribe</Button>
-      </DialogActions>
+      <DialogActions></DialogActions>
     </CustomDialog>
-  )
-}
+  );
+};
 
 export default AddEditUserModal;
