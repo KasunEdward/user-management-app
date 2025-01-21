@@ -65,7 +65,7 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
 
   return (
     <CustomDialog open={open} onClose={handleClose}>
-      <DialogTitle>Add User</DialogTitle>
+      <DialogTitle>{existingUser? "Update User":"Add User"}</DialogTitle>
       <DialogContent>
         <Formik
           initialValues={initialValues}
@@ -131,7 +131,6 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
           </Backdrop>
         )}
       </DialogContent>
-      <DialogActions></DialogActions>
     </CustomDialog>
   );
 };

@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { addUserApi, fetchUsersApi, updateUserApi } from "../apis/userApi";
+import { addUserApi, deleteUserApi, fetchUsersApi, updateUserApi } from "../apis/userApi";
 
 import { SagaIterator } from "redux-saga";
-import { addUserFailure, addUserRequest, addUserSuccess, fetchUsersFailure, fetchUsersRequest, fetchUsersSuccess, updateUserFailure, updateUserRequest, updateUserSuccess } from "../slices/userSlice";
+import { addUserFailure, addUserRequest, addUserSuccess, deleteUserFailure, deleteUserRequest, deleteUserSuccess, fetchUsersFailure, fetchUsersRequest, fetchUsersSuccess, updateUserFailure, updateUserRequest, updateUserSuccess } from "../slices/userSlice";
 
 function* fetchUsers(action: ReturnType<typeof fetchUsersRequest>): SagaIterator {
   const { start = 0, limit = 100 } = action.payload || {};
@@ -35,23 +35,36 @@ function* updateUser(action: ReturnType<typeof updateUserRequest>): SagaIterator
   }
 }
 
+function* deleteUser(action: ReturnType<typeof deleteUserRequest>): SagaIterator {
+  try {
+    const response = yield call(deleteUserApi, action.payload);
+    yield put(deleteUserSuccess(response.data));
+  } catch (error:any) {
+    yield put(deleteUserFailure(error.message));
+  }
+}
+
 export function* fetchUsersSaga() {
   yield takeLatest(
     fetchUsersRequest.type,
     fetchUsers
   );
 }
-
 export function* addUserSaga() {
   yield takeLatest(
     addUserRequest.type,
     addUser
   );
 }
-
 export function* updateUserSaga() {
   yield takeLatest(
     updateUserRequest.type,
     updateUser
+  );
+}
+export function* deleteUserSaga() {
+  yield takeLatest(
+    deleteUserRequest.type,
+    deleteUser
   );
 }

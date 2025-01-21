@@ -48,6 +48,6 @@ export const updateUserApi = (updatedUser:User) =>{
     return axios.put(`${API_URL}/${updatedUser.id}`, updatedUser);
 }
 
-export const deleteUserApi = (id:number) =>{
+export const deleteUserApi = (id:string) =>{
     return axios.delete(`${API_URL}/${id}`);
 }        

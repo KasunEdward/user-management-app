@@ -6,16 +6,14 @@ import React, {
   useState,
 } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchUsersRequest, User } from "../../services/slices/userSlice";
-import { RootState, AppDispatch } from "../../services/store";
+import { useSelector } from "react-redux";
+import { User } from "../../services/slices/userSlice";
+import { RootState } from "../../services/store";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
 import {
-  ColDef,
   InfiniteRowModelModule,
   INumberFilterParams,
-  ITextFilterParams,
   ModuleRegistry,
   NumberFilterModule,
   RowSelectionModule,
@@ -33,6 +31,9 @@ import {
 import { fetchUsersApi } from "../../services/apis/userApi";
 import ButtonStyled from "../../components/ButtonStyled";
 import AddEditUserModal from "../../views/AddEditUserModal";
+import { ToastContainer, toast } from "material-react-toastify";
+import "material-react-toastify/dist/ReactToastify.css";
+import DeleteUserModal from "../../views/DeleteUserModal";
 
 // Register the InfiniteRowModelModule
 ModuleRegistry.registerModules([
@@ -49,6 +50,7 @@ const Users: React.FC = () => {
   const { mode } = useThemeContext();
 
   const [openAddEditUser, setOpenAddEditUser] = useState(false);
+  const [openDeleteUser, setOpenDeleteUser] = useState(false);
   const [selectedItem, setSelectedItem] = useState<User | undefined>();
 
   const gridRef = useRef<any>(null);
@@ -128,7 +130,11 @@ const Users: React.FC = () => {
     params.api.setGridOption("datasource", datasource);
   }, []);
 
-  const themeLightWarm = themeQuartz.withPart(colorSchemeLightWarm);
+  const themeLightWarm = themeQuartz.withPart(colorSchemeLightWarm).withParams({
+    backgroundColor: "rgb(216, 225, 230)",
+    foregroundColor: "rgb(2, 10, 31)",
+    browserColorScheme: "light",
+  });
   const themeDarkWarm = themeQuartz.withPart(colorSchemeDarkWarm);
 
   const handleSelection = () => {
@@ -144,6 +150,22 @@ const Users: React.FC = () => {
     if (gridRef.current)
       gridRef.current.setGridOption("datasource", datasource);
     setOpenAddEditUser(false);
+    if (selectedItem) {
+      toast.success("User updated successfully!");
+    } else {
+      toast.success("User added successfully!");
+    }
+  };
+
+  const handleOpenDeleteUser = () => {
+    setOpenDeleteUser(true);
+  };
+
+  const handleCloseDeleteUser = () => {
+    if (gridRef.current)
+      gridRef.current.setGridOption("datasource", datasource);
+    setOpenDeleteUser(false);
+    toast.success("User deleted successfully!");
   };
 
   if (loadingFetch) return <p>Loading...</p>;
@@ -151,7 +173,8 @@ const Users: React.FC = () => {
 
   return (
     <Layout>
-      <UsersContainer>
+      <ToastContainer />
+      <UsersContainer mode={mode}>
         <ButtonContainer>
           {!selectedItem && (
             <ButtonStyled color="primary" onClick={handleOpenAddEditUser}>
@@ -163,7 +186,7 @@ const Users: React.FC = () => {
               <ButtonStyled color="primary" onClick={handleOpenAddEditUser}>
                 Edit User
               </ButtonStyled>
-              <ButtonStyled color="primary" onClick={handleOpenAddEditUser}>
+              <ButtonStyled color="error" onClick={handleOpenDeleteUser}>
                 Delete User
               </ButtonStyled>
             </>
@@ -188,6 +211,13 @@ const Users: React.FC = () => {
           open={openAddEditUser}
           existingUser={selectedItem}
           handleClose={handleCloseAddEditUser}
+        />
+      )}
+      {openDeleteUser && (
+        <DeleteUserModal
+          open={openDeleteUser}
+          id={selectedItem?.id ?? ""}
+          handleClose={handleCloseDeleteUser}
         />
       )}
     </Layout>

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // User Interface
 export interface User {
-  id?: number;
+  id?: string;
   name: string;
   age: number | null;
   city: string;
@@ -12,6 +12,7 @@ interface UserState {
   data: User[];
   loadingFetch: boolean;
   loadingAddEdit: boolean;
+  loadingDelete:boolean;
   error: string | null;
   total: number;
 }
@@ -21,6 +22,7 @@ const initialState: UserState = {
   data: [],
   loadingFetch: false,
   loadingAddEdit: false,
+  loadingDelete:false,
   error: null,
   total: 0,
 };
@@ -73,6 +75,18 @@ const userSlice = createSlice({
       state.loadingAddEdit = false;
       state.error = action.payload;
     },
+    deleteUserRequest: (state, action: PayloadAction<string>) => {
+      state.loadingDelete = true;
+      state.error = null;
+    },
+    deleteUserSuccess: (state, action: PayloadAction<User>) => {
+      state.loadingDelete = false;
+      state.error = null;
+    },
+    deleteUserFailure: (state, action: PayloadAction<string>) => {
+      state.loadingDelete = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -86,6 +100,9 @@ export const {
   updateUserRequest,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteUserFailure
 } = userSlice.actions;
 
 export default userSlice.reducer;
