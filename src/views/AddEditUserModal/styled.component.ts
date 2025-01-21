@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Dialog, TextField } from "@mui/material";
 
-export const CustomDialog = styled(Dialog)(({ theme }) => ({
+export const CustomDialog = styled(Dialog)(() => ({
     "& .MuiPaper-root": {
       "border-radius": "1rem", 
     },
@@ -10,7 +10,7 @@ export const CustomDialog = styled(Dialog)(({ theme }) => ({
     },
   }));
 
-export const CustomTextField = styled(TextField)(({ theme }) => ({
+export const CustomTextField = styled(TextField)(() => ({
     "& .MuiInputBase-root": {
       "border-radius": "1rem"
     },

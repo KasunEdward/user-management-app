@@ -14,9 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../services/store";
 import { useEffect, useState } from "react";
 import {
-  addUserRequest,
   deleteUserRequest,
-  updateUserRequest,
 } from "../../services/slices/userSlice";
 
 interface DeleteUserModalProps {

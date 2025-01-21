@@ -33,8 +33,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     fetchUsersRequest: (
-      state,
-      action: PayloadAction<{ start: number; limit: number }>
+      state
     ) => {
       state.loadingFetch = true;
       state.error = null;
@@ -51,7 +50,7 @@ const userSlice = createSlice({
       state.loadingFetch = false;
       state.error = action.payload;
     },
-    addUserRequest: (state, action: PayloadAction<User>) => {
+    addUserRequest: (state,_action: PayloadAction<User>) => {
       state.loadingAddEdit = true;
       state.error = null;
     },
@@ -63,11 +62,11 @@ const userSlice = createSlice({
       state.loadingAddEdit = false;
       state.error = action.payload;
     },
-    updateUserRequest: (state, action: PayloadAction<User>) => {
+    updateUserRequest: (state, _action: PayloadAction<User>) => {
       state.loadingAddEdit = true;
       state.error = null;
     },
-    updateUserSuccess: (state, action: PayloadAction<User>) => {
+    updateUserSuccess: (state, _action: PayloadAction<User>) => {
       state.loadingAddEdit = false;
       state.error = null;
     },
@@ -75,11 +74,11 @@ const userSlice = createSlice({
       state.loadingAddEdit = false;
       state.error = action.payload;
     },
-    deleteUserRequest: (state, action: PayloadAction<string>) => {
+    deleteUserRequest: (state, _action: PayloadAction<string>) => {
       state.loadingDelete = true;
       state.error = null;
     },
-    deleteUserSuccess: (state, action: PayloadAction<User>) => {
+    deleteUserSuccess: (state, _action: PayloadAction<User>) => {
       state.loadingDelete = false;
       state.error = null;
     },

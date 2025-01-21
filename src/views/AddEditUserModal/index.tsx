@@ -2,7 +2,6 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
@@ -70,7 +69,7 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
         <Formik
           initialValues={initialValues}
           validationSchema={UserSchema}
-          onSubmit={(values, { resetForm }) => {
+          onSubmit={(values) => {
             handleSubmit(values);
           }}
         >
