@@ -94,7 +94,6 @@ useImperativeHandle(ref, () => ({
   const datasource = {
     rowCount: undefined, // Infinite scrolling
     getRows: async (gridParams: any) => {
-      console.log(gridParams);
       const { startRow, endRow, sortModel, filterModel } = gridParams;
       try {
         // Call the reusable API function
@@ -118,7 +117,6 @@ useImperativeHandle(ref, () => ({
   };
 
   const onGridReady = useCallback(async (params: any) => {
-    console.log(params);
     if (gridRef && gridRef.current) {
       gridRef.current = params.api;
     }

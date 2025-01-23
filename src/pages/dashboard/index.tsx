@@ -21,9 +21,6 @@ const Dashboard: React.FC = () => {
 	useEffect(()=>{
     dispatch(fetchStatsRequest())
 	},[]);
-  useEffect(()=>{
-		console.log(data)
-	},[data,loading,error])
 
   return (
     <Layout>

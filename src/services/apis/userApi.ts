@@ -35,7 +35,6 @@ export const fetchUsersApi = async ({
       _limit: limit.toString(),
       ...(sort && { _sort: sort }),
     }).toString();
-    console.log(`${API_URL}?${query}`);
       return axios.get(`${API_URL}?${filters}&${query}`);
   };
   

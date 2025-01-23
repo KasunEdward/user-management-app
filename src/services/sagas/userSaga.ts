@@ -9,7 +9,6 @@ function* fetchUsers(action: ReturnType<typeof fetchUsersRequest>): SagaIterator
   try {
     const response = yield call(fetchUsersApi, { start, limit });
     const total = response.data.length;
-    // console.log(response.data);
 
     yield put(fetchUsersSuccess({ users: response.data, total }));
   } catch (error:any) {

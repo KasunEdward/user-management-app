@@ -15,7 +15,6 @@ export type BarsProps = {
 };
 
 const BarChart = ({ width, height, events = false, data }: BarsProps) => {
-console.log(data);
 const verticalMargin = 120;
 
 // accessors
