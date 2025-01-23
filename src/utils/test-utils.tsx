@@ -7,6 +7,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider} from "../context/ThemeContext";
 import { getDesignTokens } from "../utils/theme/config";
 import store from "../services/store"; 
+import { BrowserRouter } from "react-router-dom";
 interface RenderWithProvidersOptions extends RenderOptions {
   mode?: "light" | "dark";
 }
@@ -23,7 +24,9 @@ const renderWithProviders = (
       <ThemeProvider>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
+          <BrowserRouter>
           {children}
+          </BrowserRouter>
         </MuiThemeProvider>
       </ThemeProvider>
     </Provider>

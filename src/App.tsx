@@ -24,7 +24,6 @@ const App: React.FC = () => {
     <ThemeProvider>
       <AppThemeProvider>
         {/* Your application components go here */}
-        <MenuBar />
         <AppRoutes/>
       </AppThemeProvider>
     </ThemeProvider>

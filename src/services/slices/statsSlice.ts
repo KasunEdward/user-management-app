@@ -1,33 +1,36 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface UserCity {
-    city: string;
-    count: number;
- }
-
-export interface UserAge {
-    category: string;
-    count:number;
+export interface ChartItem {
+  name: string;
+  value: number;
+  color?: string;
 }
 
-export interface StatData{
-  usersByCity:UserCity[];
-  usersByAgeCategory:UserAge[];
-  totalUsers: number;
-  totalCities: number;
- highestAge: number;
- lowestAge: number;
+export interface Metric {
+    name: string;
+    value:number;
+    color:"green" | "blue" | "red" | "orange" | undefined
 }
 
-interface UserState {
-  data: StatData|{};
+export interface StatData {
+  usersByCity: ChartItem[];
+  usersByAgeCategory: ChartItem[];
+  metrics: Metric[];
+}
+
+interface StatsState {
+  data: StatData;
   loading: boolean;
   error: string | null;
 }
 
 // Initial State
-const initialState: UserState = {
-  data: {},
+const initialState: StatsState = {
+  data: {
+    usersByCity: [],
+    usersByAgeCategory: [],
+    metrics: [],
+  },
   loading: false,
   error: null,
 };
@@ -37,17 +40,12 @@ const statsSlice = createSlice({
   name: "stats",
   initialState,
   reducers: {
-    fetchStatsRequest: (
-      state
-    ) => {
+    fetchStatsRequest: (state) => {
       state.loading = true;
       state.error = null;
     },
-    fetchStatsSuccess: (
-      state,
-      action: PayloadAction<{ stats: StatData }>
-    ) => {
-      state.loading= false;
+    fetchStatsSuccess: (state, action: PayloadAction<{ stats: StatData }>) => {
+      state.loading = false;
       state.data = action.payload.stats;
     },
     fetchStatsFailure: (state, action: PayloadAction<string>) => {
@@ -57,10 +55,7 @@ const statsSlice = createSlice({
   },
 });
 
-export const {
-  fetchStatsRequest,
-  fetchStatsSuccess,
-  fetchStatsFailure,
-} = statsSlice.actions;
+export const { fetchStatsRequest, fetchStatsSuccess, fetchStatsFailure } =
+  statsSlice.actions;
 
 export default statsSlice.reducer;

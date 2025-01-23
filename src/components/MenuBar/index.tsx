@@ -12,9 +12,10 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { useThemeContext } from "../../context/ThemeContext";
-import { Switch } from "@mui/material";
+import { Switch, Tooltip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { DarkMode, LightModeOutlined } from "@mui/icons-material";
 
 interface Props {
   /**
@@ -25,16 +26,48 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = ["Home"];
+const navItems = [
+  {
+    name: "Dashboard",
+    url: "/",
+  },
+  {
+    name: "Users",
+    url: "/users",
+  },
+];
 
 const MenuBar: React.FC = (props: Props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { mode, toggleMode } = useThemeContext();
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  const ModeHandler = (
+    <Tooltip
+    title={`Toggle ${mode === "light" ? "Dark" : "Light"} mode`}
+    placement="bottom"
+  >
+    <IconButton onClick={toggleMode}>
+      {mode === "light" ? (
+        <DarkMode
+          sx={{
+            color: "blue",
+            width: "30px",
+            height: "30px",
+            borderRadius: "50%",
+          }}
+        />
+      ) : (
+        <LightModeOutlined />
+      )}
+    </IconButton>
+  </Tooltip>
+  )
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -44,18 +77,19 @@ const MenuBar: React.FC = (props: Props) => {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+              <ListItemText
+                primary={item.name}
+                onClick={() => {
+                  navigate(item.url);
+                }}
+              />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Switch
-        checked={mode === "dark"}
-        onChange={toggleMode}
-        inputProps={{ "aria-label": "controlled" }}
-      />
+      {ModeHandler}
     </Box>
   );
 
@@ -84,21 +118,16 @@ const MenuBar: React.FC = (props: Props) => {
           <Typography
             variant="h6"
             component="div"
-            sx={(theme)=>({ flexGrow: 1, color:theme.palette.primary.text.primary, fontWeight: 600 })}
+            sx={(theme) => ({
+              flexGrow: 1,
+              color: theme.palette.primary.text.primary,
+              fontWeight: 600,
+            })}
           >
             User Management App
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
-              </Button>
-            ))}
-            <Switch
-              checked={mode === "dark"}
-              onChange={toggleMode}
-              inputProps={{ "aria-label": "controlled" }}
-            />
+            {ModeHandler}
           </Box>
         </Toolbar>
       </AppBar>

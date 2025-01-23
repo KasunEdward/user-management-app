@@ -19,10 +19,11 @@ interface AddEditUserModalProps {
   open: boolean;
   existingUser:User | undefined;
   handleClose: () => void;
+  handleCancel: () => void;
 }
 
 const AddEditUserModal = (props: AddEditUserModalProps) => {
-  const { open, handleClose, existingUser } = props;
+  const { open, handleClose, existingUser,handleCancel } = props;
   const [submitted, setSubmitted] = useState(false);
   const { loadingAddEdit } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
@@ -112,7 +113,7 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
                     <ButtonStyled type="submit" color="primary">
                       {existingUser ? "Update User" : "Add User"}
                     </ButtonStyled>
-                    <ButtonStyled outlined onClick={handleClose}>
+                    <ButtonStyled outlined onClick={handleCancel}>
                       Cancel
                     </ButtonStyled>
                   </Box>

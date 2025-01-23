@@ -3,24 +3,24 @@ import { Bar } from '@visx/shape';
 import { Group } from '@visx/group';
 import { AxisBottom } from '@visx/axis';
 import { GradientTealBlue } from '@visx/gradient';
-import letterFrequency, { LetterFrequency } from '@visx/mock-data/lib/mocks/letterFrequency';
 import { scaleBand, scaleLinear } from '@visx/scale';
+import { ChartItem } from '../../services/slices/statsSlice';
 
-const data = letterFrequency.slice(5);
-console.log(data);
-const verticalMargin = 120;
-
-// accessors
-const getLetter = (d: LetterFrequency) => d.letter;
-const getLetterFrequency = (d: LetterFrequency) => Number(d.frequency) * 100;
 
 export type BarsProps = {
   width: number;
   height: number;
   events?: boolean;
+	data:ChartItem[]
 };
 
-const BarChart = ({ width, height, events = false }: BarsProps) => {
+const BarChart = ({ width, height, events = false, data }: BarsProps) => {
+console.log(data);
+const verticalMargin = 120;
+
+// accessors
+const getX_Data = (d: ChartItem) => d.name;
+const getY_Data = (d: ChartItem) => d.value
   // bounds
   const xMax = width;
   const yMax = height - verticalMargin;
@@ -31,7 +31,7 @@ const BarChart = ({ width, height, events = false }: BarsProps) => {
       scaleBand<string>({
         range: [0, xMax],
         round: true,
-        domain: data.map(getLetter),
+        domain: data.map(getX_Data),
         padding: 0.4,
       }),
     [xMax],
@@ -41,7 +41,7 @@ const BarChart = ({ width, height, events = false }: BarsProps) => {
       scaleLinear<number>({
         range: [yMax, 0],
         // round: true,
-        domain: [0, Math.max(...data.map(getLetterFrequency))],
+        domain: [0, Math.max(...data.map(getY_Data))],
       }),
     [yMax],
   );
@@ -52,9 +52,9 @@ const BarChart = ({ width, height, events = false }: BarsProps) => {
       <rect width={width} height={height} fill="url(#teal)" rx={14} />
       <Group top={verticalMargin / 2}>
         {data.map((d) => {
-          const letter = getLetter(d);
+          const letter = getX_Data(d);
           const barWidth = xScale.bandwidth();
-          const barHeight = yMax - (yScale(getLetterFrequency(d)) ?? 0);
+          const barHeight = yMax - (yScale(getY_Data(d)) ?? 0);
           const barX = xScale(letter);
           const barY = yMax - barHeight;
           return (
@@ -73,11 +73,12 @@ const BarChart = ({ width, height, events = false }: BarsProps) => {
         })}
 				<AxisBottom
           scale={xScale}
-          label="Letter (English)"
           top={yMax}
           numTicks={data.length}
 					stroke={"white"}
+					labelProps={{stroke:"white",fill:"white"}}
           tickStroke={"white"}
+					tickLabelProps={() => ({ fill: 'white', fontSize: 11, textAnchor: 'middle' })}
         />
       </Group>
 			

@@ -9,7 +9,7 @@ import PieChart from "../../components/PieChart";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../services/store";
 import { useEffect } from "react";
-import { fetchStatsRequest } from "../../services/slices/statsSlice";
+import { fetchStatsRequest, Metric } from "../../services/slices/statsSlice";
 
 const Dashboard: React.FC = () => {
   const { mode } = useThemeContext();
@@ -36,20 +36,14 @@ const Dashboard: React.FC = () => {
             spacing={3}
             sx={{ marginTop: "20px", marginLeft: "10px" }}
           >
-            <Grid item xs={3}>
-              <CardStyled title="Total Users" value={40} />
-            </Grid>
-            <Grid item xs={3}>
-              <CardStyled color="red" title="Total Users" value={40} />
-            </Grid>
-            <Grid item xs={3}>
-              <CardStyled color="blue" title="Total Users" value={40} />
-            </Grid>
-            <Grid item xs={3}>
-              <CardStyled color="orange" title="Total Users" value={40} />
-            </Grid>
+            {data?.metrics.map(({name,color,value}:Metric)=>(
+               <Grid item sm={3} xs={6} key={name}>
+               <CardStyled title={name} value={value} color={color} />
+             </Grid>
+            ))}
+           
           </Grid>
-          <Grid item xs={12} lg={6} sx={{ height: "300px" }}>
+          <Grid item xs={12} lg={6} sx={{ height: "300px",marginBottom:"50px" }}>
             <Typography
               variant="h6"
               sx={(theme) => ({ color: theme.palette.primary.text.primary })}
@@ -59,11 +53,11 @@ const Dashboard: React.FC = () => {
             </Typography>
             <ParentSize>
               {({ width, height }) => (
-                <BarChart width={width} height={height} />
+                <BarChart width={width} height={height} data={data?.usersByCity} />
               )}
             </ParentSize>
           </Grid>
-          <Grid item xs={12} lg={6} sx={{ height: "300px" }}>
+          <Grid item xs={12} lg={6} sx={{ height: "300px",marginBottom:"50px"  }}>
             <Typography
               variant="h6"
               sx={(theme) => ({ color: theme.palette.primary.text.primary })}
@@ -73,7 +67,7 @@ const Dashboard: React.FC = () => {
             </Typography>
             <ParentSize>
               {({ width, height }) => (
-                <PieChart width={width} height={height} />
+                <PieChart width={width} height={height} data={data?.usersByAgeCategory} />
               )}
             </ParentSize>
           </Grid>

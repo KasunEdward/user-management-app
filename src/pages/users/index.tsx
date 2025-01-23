@@ -1,7 +1,4 @@
-import {
-  useRef,
-  useState,
-} from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { User } from "../../services/slices/userSlice";
 import { RootState } from "../../services/store";
@@ -17,6 +14,7 @@ import {
 import { useThemeContext } from "../../context/ThemeContext";
 import Layout from "../../layout";
 import {
+  ActionBar,
   ButtonContainer,
   TableContainer,
   UsersContainer,
@@ -27,6 +25,7 @@ import { ToastContainer, toast } from "material-react-toastify";
 import "material-react-toastify/dist/ReactToastify.css";
 import DeleteUserModal from "../../components/DeleteUserModal";
 import UserGrid from "../../components/UserGrid";
+import { Typography } from "@mui/material";
 
 // Register the InfiniteRowModelModule
 ModuleRegistry.registerModules([
@@ -75,6 +74,11 @@ const Users: React.FC = () => {
     toast.success("User deleted successfully!");
   };
 
+  const handleCancelPopup = () => {
+    setOpenAddEditUser(false);
+    setOpenDeleteUser(false);
+  };
+
   if (loadingFetch) return <p>Loading...</p>;
   if (!loadingFetch && error) return <p>Error: {error}</p>;
 
@@ -82,23 +86,32 @@ const Users: React.FC = () => {
     <Layout>
       <ToastContainer />
       <UsersContainer mode={mode}>
-        <ButtonContainer>
+        <ActionBar>
+          <Typography
+            variant="h6"
+            sx={(theme) => ({
+              fontWeight: 500,
+              color: theme.palette.primary.text.primary,
+            })}
+          >
+            Users List
+          </Typography>
           {!selectedItem && (
             <ButtonStyled color="primary" onClick={handleOpenAddEditUser}>
               Add User
             </ButtonStyled>
           )}
           {selectedItem && (
-            <>
+            <ButtonContainer>
               <ButtonStyled color="primary" onClick={handleOpenAddEditUser}>
                 Edit User
               </ButtonStyled>
               <ButtonStyled color="error" onClick={handleOpenDeleteUser}>
                 Delete User
               </ButtonStyled>
-            </>
+            </ButtonContainer>
           )}
-        </ButtonContainer>
+        </ActionBar>
         <TableContainer>
           <UserGrid onSelectionChanged={handleSelection} ref={gridRef} />
         </TableContainer>
@@ -108,6 +121,7 @@ const Users: React.FC = () => {
           open={openAddEditUser}
           existingUser={selectedItem}
           handleClose={handleCloseAddEditUser}
+          handleCancel={handleCancelPopup}
         />
       )}
       {openDeleteUser && (
@@ -115,6 +129,7 @@ const Users: React.FC = () => {
           open={openDeleteUser}
           id={selectedItem?.id ?? ""}
           handleClose={handleCloseDeleteUser}
+          handleCancel={handleCancelPopup}
         />
       )}
     </Layout>

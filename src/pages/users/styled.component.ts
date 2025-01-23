@@ -23,8 +23,13 @@ export const TableContainer = styled.div`
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
 `;
 
-export const ButtonContainer = styled.div`
+export const ActionBar = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0.75rem 0;
+  align-items: end;
 `;
+
+export  const ButtonContainer = styled.div`
+  display: flex;
+  `

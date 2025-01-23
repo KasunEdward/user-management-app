@@ -20,11 +20,12 @@ import {
 interface DeleteUserModalProps {
   open: boolean;
   handleClose: () => void;
+  handleCancel?: () => void;
   id: string;
 }
 
 const DeleteUserModal = (props: DeleteUserModalProps) => {
-  const { open, handleClose, id } = props;
+  const { open, handleClose, id, handleCancel} = props;
   const [submitted, setSubmitted] = useState(false);
   const { loadingAddEdit } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
           <ButtonStyled onClick={handleDelete} color="error">
             Delete User
           </ButtonStyled>
-          <ButtonStyled outlined onClick={handleClose}>
+          <ButtonStyled outlined onClick={handleCancel}>
             Cancel
           </ButtonStyled>
         </Box>
