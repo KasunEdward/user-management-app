@@ -1,10 +1,7 @@
-import React, {
-  useCallback,
-  useMemo,
+import {
   useRef,
   useState,
 } from "react";
-import { AgGridReact } from "ag-grid-react";
 import { useSelector } from "react-redux";
 import { User } from "../../services/slices/userSlice";
 import { RootState } from "../../services/store";
@@ -12,14 +9,11 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 
 import {
   InfiniteRowModelModule,
-  INumberFilterParams,
   ModuleRegistry,
   NumberFilterModule,
   RowSelectionModule,
   TextFilterModule,
-  themeQuartz,
 } from "ag-grid-community";
-import { colorSchemeDarkWarm, colorSchemeLightWarm } from "ag-grid-community";
 import { useThemeContext } from "../../context/ThemeContext";
 import Layout from "../../layout";
 import {
@@ -27,12 +21,12 @@ import {
   TableContainer,
   UsersContainer,
 } from "./styled.component";
-import { fetchUsersApi } from "../../services/apis/userApi";
 import ButtonStyled from "../../components/ButtonStyled";
-import AddEditUserModal from "../../views/AddEditUserModal";
+import AddEditUserModal from "../../components/AddEditUserModal";
 import { ToastContainer, toast } from "material-react-toastify";
 import "material-react-toastify/dist/ReactToastify.css";
-import DeleteUserModal from "../../views/DeleteUserModal";
+import DeleteUserModal from "../../components/DeleteUserModal";
+import UserGrid from "../../components/UserGrid";
 
 // Register the InfiniteRowModelModule
 ModuleRegistry.registerModules([
@@ -47,98 +41,14 @@ const Users: React.FC = () => {
     (state: RootState) => state.users
   );
   const { mode } = useThemeContext();
+  const gridRef = useRef<any>(null);
 
   const [openAddEditUser, setOpenAddEditUser] = useState(false);
   const [openDeleteUser, setOpenDeleteUser] = useState(false);
   const [selectedItem, setSelectedItem] = useState<User | undefined>();
 
-  const gridRef = useRef<any>(null);
-
-  const defaultColDef = useMemo(() => {
-    return {
-      flex: 1,
-      filter: true,
-      floatingFilter: true,
-      minWidth: 150,
-    };
-  }, []);
-
-  // Define column definitions for AG Grid
-  const [columnDefs] = useState([
-    {
-      field: "id" as keyof User,
-      headerName: "ID",
-      sortable: false,
-      filter: false,
-      width: 100,
-      checkboxSelection: true,
-    },
-    {
-      field: "name" as keyof User,
-      headerName: "Name",
-      sortable: true,
-    },
-    {
-      field: "age" as keyof User,
-      headerName: "Age",
-      sortable: true,
-      filter: "agNumberColumnFilter",
-      filterParams: {
-        buttons: ["apply", "reset"],
-        closeOnApply: true,
-      } as INumberFilterParams,
-      width: 100,
-    },
-    {
-      field: "city" as keyof User,
-      headerName: "City",
-      sortable: true,
-      filter: "agTextColumnFilter",
-      flex: 1,
-    },
-  ]);
-
-  const datasource = {
-    rowCount: undefined, // Infinite scrolling
-    getRows: async (gridParams: any) => {
-      const { startRow, endRow, sortModel, filterModel } = gridParams;
-      try {
-        // Call the reusable API function
-        const { data } = await fetchUsersApi({
-          start: startRow,
-          limit: endRow - startRow,
-          sortModel,
-          filterModel,
-        });
-
-        // Check if this is the last page
-        const lastRow =
-          data.length < endRow - startRow ? startRow + data.length : undefined;
-
-        gridParams.successCallback(data, lastRow);
-      } catch (error) {
-        // Handle API errors
-        gridParams.failCallback();
-      }
-    },
-  };
-
-  const onGridReady = useCallback(async (params: any) => {
-    gridRef.current = params.api;
-    // Set the datasource to the grid
-    params.api.setGridOption("datasource", datasource);
-  }, []);
-
-  const themeLightWarm = themeQuartz.withPart(colorSchemeLightWarm).withParams({
-    backgroundColor: "rgb(216, 225, 230)",
-    foregroundColor: "rgb(2, 10, 31)",
-    browserColorScheme: "light",
-  });
-  const themeDarkWarm = themeQuartz.withPart(colorSchemeDarkWarm);
-
-  const handleSelection = () => {
-    const selectedItems = gridRef.current.getSelectedNodes();
-    setSelectedItem(selectedItems?.length ? selectedItems[0].data : null);
+  const handleSelection = (selectedItem: User | undefined) => {
+    setSelectedItem(selectedItem);
   };
 
   const handleOpenAddEditUser = () => {
@@ -146,9 +56,8 @@ const Users: React.FC = () => {
   };
 
   const handleCloseAddEditUser = () => {
-    if (gridRef.current)
-      gridRef.current.setGridOption("datasource", datasource);
     setOpenAddEditUser(false);
+    gridRef.current?.setGridOption();
     if (selectedItem) {
       toast.success("User updated successfully!");
     } else {
@@ -161,9 +70,8 @@ const Users: React.FC = () => {
   };
 
   const handleCloseDeleteUser = () => {
-    if (gridRef.current)
-      gridRef.current.setGridOption("datasource", datasource);
     setOpenDeleteUser(false);
+    gridRef.current?.setGridOption();
     toast.success("User deleted successfully!");
   };
 
@@ -192,17 +100,7 @@ const Users: React.FC = () => {
           )}
         </ButtonContainer>
         <TableContainer>
-          <AgGridReact
-            ref={gridRef}
-            theme={mode === "light" ? themeLightWarm : themeDarkWarm}
-            defaultColDef={defaultColDef}
-            columnDefs={columnDefs}
-            rowModelType="infinite"
-            cacheBlockSize={100} // Number of rows to fetch at once
-            onGridReady={onGridReady}
-            rowSelection={"single"}
-            onSelectionChanged={handleSelection}
-          />
+          <UserGrid onSelectionChanged={handleSelection} ref={gridRef} />
         </TableContainer>
       </UsersContainer>
       {openAddEditUser && (

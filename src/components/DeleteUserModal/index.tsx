@@ -7,7 +7,7 @@ import {
   DialogTitle,
 	Typography,
 } from "@mui/material";
-import ButtonStyled from "../../components/ButtonStyled";
+import ButtonStyled from "../ButtonStyled";
 import { CustomDialog } from "./styled.component";
 
 import { useDispatch, useSelector } from "react-redux";

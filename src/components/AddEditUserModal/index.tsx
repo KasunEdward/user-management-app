@@ -6,7 +6,7 @@ import {
   DialogTitle,
   Grid,
 } from "@mui/material";
-import ButtonStyled from "../../components/ButtonStyled";
+import ButtonStyled from "../ButtonStyled";
 import { CustomDialog, CustomTextField } from "./styled.component";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";

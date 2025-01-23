@@ -52,10 +52,10 @@ const MenuBar: React.FC = (props: Props) => {
         ))}
       </List>
       <Switch
-              checked={mode === "dark"}
-              onChange={toggleMode}
-              inputProps={{ "aria-label": "controlled" }}
-            />
+        checked={mode === "dark"}
+        onChange={toggleMode}
+        inputProps={{ "aria-label": "controlled" }}
+      />
     </Box>
   );
 
@@ -66,20 +66,25 @@ const MenuBar: React.FC = (props: Props) => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar>
+        <Toolbar
+          sx={(theme) => ({
+            backgroundColor: theme.palette.primary.background.default,
+            color: theme.palette.primary.text.primary,
+          })}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1 }}
+            sx={(theme)=>({ flexGrow: 1, color:theme.palette.primary.text.primary, fontWeight: 600 })}
           >
             User Management App
           </Typography>
@@ -106,13 +111,16 @@ const MenuBar: React.FC = (props: Props) => {
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
-          sx={{
-            display: { xs: "block", sm: "none" },
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+            "& .MuiButtonBase-root MuiIconButton-root": {
+              color: theme.palette.text.primary,
+            },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
             },
-          }}
+          })}
         >
           {drawer}
         </Drawer>

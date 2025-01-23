@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Allison Hill",
-      "age": 43,
+      "age": 44,
       "city": "Brussels"
     },
     {
@@ -447,7 +447,7 @@
     {
       "id": 75,
       "name": "Lauren Shaw",
-      "age": 63,
+      "age": 65,
       "city": "Budapest"
     },
     {
@@ -6001,12 +6001,6 @@
       "city": "Zurich"
     },
     {
-      "name": "Kasun Edward",
-      "age": 32,
-      "city": "Narammala",
-      "id": 1001
-    },
-    {
       "name": "Yashodha",
       "age": 32,
       "city": "Colombo",
@@ -6041,12 +6035,6 @@
       "age": 25,
       "city": "DDD",
       "id": 1008
-    },
-    {
-      "name": "Kasun Edward",
-      "age": 25,
-      "city": "Oslo",
-      "id": 1009
     }
   ]
 }

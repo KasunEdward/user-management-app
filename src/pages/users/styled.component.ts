@@ -13,7 +13,7 @@ export const UsersContainer = styled.div<ThemeProps>`
   background: ${({ mode }) =>
     mode === "dark"
       ? "linear-gradient(90deg,rgb(82, 82, 88),rgb(2, 10, 31))"
-      : "linear-gradient(90deg,rgb(223 229 231),rgb(77 153 229))"};
+      : "rgb(242, 245, 249)"};
 `;
 
 export const TableContainer = styled.div`
