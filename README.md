@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
+# User Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Prerequisites
 
-Currently, two official plugins are available:
+Before running the application locally, ensure you have the following installed:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Node.js (>=14.x)**  
+   Download and install Node.js from [here](https://nodejs.org/).
 
-## Expanding the ESLint configuration
+2. **npm or Yarn**  
+   npm is included with Node.js. Alternatively, you can install Yarn:  
+   ```bash
+   npm install --global yarn
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Setup Instructions
+Follow these instructions to run the project locally.
 
-- Configure the top-level `parserOptions` property like this:
+1. Install dependencies
+    ```
+      npm install
+    ```
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+2. Run the project
+    ```
+    npm start
+    ```
+ This will start the Frontend application 5173 port and two mock backends in 3001 & 3002 ports.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+ 3. Access local url
+     ```
+     http://localhost:5173
+     ```

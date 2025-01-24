@@ -1,19 +1,24 @@
 import {
+  Autocomplete,
   Backdrop,
   Box,
   CircularProgress,
   DialogContent,
   DialogTitle,
   Grid,
+  Popper,
+  styled,
+  TextField,
 } from "@mui/material";
 import ButtonStyled from "../ButtonStyled";
-import { CustomDialog, CustomTextField } from "./styled.component";
+import { CustomAutoComplete, CustomDialog, CustomTextField } from "./styled.component";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../services/store";
 import { useEffect, useState } from "react";
 import { addUserRequest, updateUserRequest, User } from "../../services/slices/userSlice";
+import { CITIES, City } from "../../utils/constants";
 
 interface AddEditUserModalProps {
   open: boolean;
@@ -74,11 +79,12 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
             handleSubmit(values);
           }}
         >
-          {({ errors, touched }) => (
+          {({ errors, touched, setFieldValue, values }) => (
             <Form>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Field
+                    required
                     as={CustomTextField}
                     fullWidth
                     label="Name"
@@ -88,8 +94,28 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  <CustomAutoComplete
+                  options={CITIES}
+                  getOptionLabel={(option) => (option as City).name}
+                  value={CITIES.find((city) => city.name === values.city) || null}
+                  onChange={(event, value) => setFieldValue("city", (value as City | null)?.name || "")}
+                  // PopperComponent={DownwardPopper}
+                  renderInput={(params: any) => (
+                    <TextField
+                    required
+                    {...params}
+                    label="City"
+                    variant="outlined"
+                    error={touched.city && Boolean(errors.city)}
+                    helperText={touched.city && errors.city}
+                    />
+                  )}
+                  />
+                </Grid>
+                <Grid item xs={12}>
                   <Field
                     as={CustomTextField}
+                    required
                     fullWidth
                     label="Age"
                     name="age"
@@ -99,19 +125,9 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Field
-                    as={CustomTextField}
-                    fullWidth
-                    label="City"
-                    name="city"
-                    error={touched.city && Boolean(errors.city)}
-                    helperText={touched.city && errors.city}
-                  />
-                </Grid>
-                <Grid item xs={12}>
                   <Box display="flex" justifyContent="flex-end" gap={2}>
                     <ButtonStyled type="submit" color="primary">
-                      {existingUser ? "Update User" : "Add User"}
+                      {existingUser ? "Update" : "Add"}
                     </ButtonStyled>
                     <ButtonStyled outlined onClick={handleCancel}>
                       Cancel

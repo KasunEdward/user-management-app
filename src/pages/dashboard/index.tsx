@@ -14,7 +14,7 @@ import { fetchStatsRequest, Metric } from "../../services/slices/statsSlice";
 const Dashboard: React.FC = () => {
   const { mode } = useThemeContext();
 	const dispatch = useDispatch();
-	const { loading, error,data } = useSelector(
+	const { data } = useSelector(
     (state: RootState) => state.stats
   );
 

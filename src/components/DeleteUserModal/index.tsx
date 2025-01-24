@@ -52,14 +52,14 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
             sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
             open={loadingAddEdit}
           >
-            <CircularProgress color="inherit" />
+            <CircularProgress data-testid="circularProgress" color="inherit" />
           </Backdrop>
         )}
       </DialogContent>
       <DialogActions>
         <Box display="flex" justifyContent="flex-end" gap={2}>
-          <ButtonStyled onClick={handleDelete} color="error">
-            Delete User
+          <ButtonStyled onClick={handleDelete} data-testid="delete-confirm" color="error">
+            Confirm
           </ButtonStyled>
           <ButtonStyled outlined onClick={handleCancel}>
             Cancel

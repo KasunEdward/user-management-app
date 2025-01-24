@@ -13,7 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useThemeContext } from "../../context/ThemeContext";
-import { Switch, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { DarkMode, LightModeOutlined } from "@mui/icons-material";
 

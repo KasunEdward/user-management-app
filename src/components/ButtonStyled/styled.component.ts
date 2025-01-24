@@ -1,7 +1,7 @@
-import styled from "@emotion/styled";
+import {styled as materialStyled} from "@mui/material";
 import { Button } from "@mui/material";
 
-export const ButtonWrapper = styled(Button)`
+export const ButtonWrapper = materialStyled(Button)`
   margin: 10px 0 0 10px;
   border-radius: 20px;
   svg {

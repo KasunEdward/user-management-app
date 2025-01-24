@@ -3,8 +3,8 @@
     {
       "id": 1,
       "name": "User 1",
-      "age": 33,
-      "city": "Stockholm"
+      "age": 17,
+      "city": "Norrköping"
     },
     {
       "id": 2,
@@ -731,12 +731,6 @@
       "name": "User 122",
       "age": 31,
       "city": "Malmö"
-    },
-    {
-      "id": 123,
-      "name": "User 123",
-      "age": 55,
-      "city": "Uppsala"
     },
     {
       "id": 124,
