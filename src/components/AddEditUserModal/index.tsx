@@ -1,13 +1,10 @@
 import {
-  Autocomplete,
   Backdrop,
   Box,
   CircularProgress,
   DialogContent,
   DialogTitle,
   Grid,
-  Popper,
-  styled,
   TextField,
 } from "@mui/material";
 import ButtonStyled from "../ButtonStyled";
@@ -98,8 +95,7 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
                   options={CITIES}
                   getOptionLabel={(option) => (option as City).name}
                   value={CITIES.find((city) => city.name === values.city) || null}
-                  onChange={(event, value) => setFieldValue("city", (value as City | null)?.name || "")}
-                  // PopperComponent={DownwardPopper}
+                  onChange={(_event, value) => setFieldValue("city", (value as City | null)?.name || "")}
                   renderInput={(params: any) => (
                     <TextField
                     required

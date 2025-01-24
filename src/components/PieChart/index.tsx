@@ -1,7 +1,6 @@
 import { Pie } from "@visx/shape";
 import { Group } from "@visx/group";
 import { scaleOrdinal } from "@visx/scale";
-import { letterFrequency } from "@visx/mock-data";
 import { GradientPurpleRed} from "@visx/gradient";
 import { ChartItem } from "../../services/slices/statsSlice";
 
