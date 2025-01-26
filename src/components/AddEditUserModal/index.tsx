@@ -52,7 +52,7 @@ const AddEditUserModal = (props: AddEditUserModalProps) => {
 
   const initialValues = existingUser??{
     name: "",
-    age: null,
+    age: 0,
     city: "",
   };
 

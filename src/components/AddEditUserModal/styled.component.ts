@@ -4,21 +4,21 @@ import { Autocomplete, Dialog, TextField } from "@mui/material";
 
 export const CustomDialog = styled(Dialog)(() => ({
     "& .MuiPaper-root": {
-      "border-radius": "1rem", 
+      borderRadius: "1rem", 
     },
     "& .MuiDialogContent-root": {
-      "padding-top": "2.25rem",
+      paddingTop: "2rem",
     },
   }));
 
 export const CustomTextField = styled(TextField)(() => ({
     "& .MuiInputBase-root": {
-      "border-radius": "1rem"
+      borderRadius: "1rem"
     },
   }));
 
 export const CustomAutoComplete = materialStyled(Autocomplete)(() => ({
     "& .MuiInputBase-root": {
-      "border-radius": "1rem"
+      borderRadius: "1rem"
     },
   }));

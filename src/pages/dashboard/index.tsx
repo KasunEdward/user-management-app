@@ -28,8 +28,6 @@ const Dashboard: React.FC = () => {
         <Grid container spacing={3}>
           <Grid
             container
-            lg={12}
-            xs={12}
             spacing={3}
             sx={{ marginTop: "20px", marginLeft: "10px" }}
           >
@@ -50,7 +48,7 @@ const Dashboard: React.FC = () => {
             </Typography>
             <ParentSize>
               {({ width, height }) => (
-                <BarChart width={width} height={height} data={data?.usersByCity} />
+                <BarChart width={width} height={height} data={data?.usersByCity}/>
               )}
             </ParentSize>
           </Grid>

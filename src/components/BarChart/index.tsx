@@ -1,27 +1,32 @@
-import { useMemo } from 'react';
-import { Bar } from '@visx/shape';
-import { Group } from '@visx/group';
-import { AxisBottom } from '@visx/axis';
-import { GradientTealBlue } from '@visx/gradient';
-import { scaleBand, scaleLinear } from '@visx/scale';
-import { ChartItem } from '../../services/slices/statsSlice';
-
+import { useMemo } from "react";
+import { Bar } from "@visx/shape";
+import { Group } from "@visx/group";
+import { AxisBottom, AxisLeft } from "@visx/axis";
+import { GradientTealBlue } from "@visx/gradient";
+import { scaleBand, scaleLinear } from "@visx/scale";
+import { ChartItem } from "../../services/slices/statsSlice";
 
 export type BarsProps = {
   width: number;
   height: number;
   events?: boolean;
-	data:ChartItem[]
+  data: ChartItem[];
 };
 
-const BarChart = ({ width, height, events = false, data }: BarsProps) => {
-const verticalMargin = 120;
+const BarChart = ({
+  width,
+  height,
+  events = false,
+  data,
+}: BarsProps) => {
+  const verticalMargin = 120;
 
-// accessors
-const getX_Data = (d: ChartItem) => d.name;
-const getY_Data = (d: ChartItem) => d.value
+
+  // accessors
+  const getX_Data = (d: ChartItem) => d.name;
+  const getY_Data = (d: ChartItem) => d.value;
   // bounds
-  const xMax = width;
+  const xMax = width-15;
   const yMax = height - verticalMargin;
 
   // scales, memoize for performance
@@ -31,9 +36,9 @@ const getY_Data = (d: ChartItem) => d.value
         range: [0, xMax],
         round: true,
         domain: data.map(getX_Data),
-        padding: 0.4,
+        padding: 0.6,
       }),
-    [xMax],
+    [xMax]
   );
   const yScale = useMemo(
     () =>
@@ -42,14 +47,28 @@ const getY_Data = (d: ChartItem) => d.value
         // round: true,
         domain: [0, Math.max(...data.map(getY_Data))],
       }),
-    [yMax],
+    [yMax]
   );
 
   return width < 10 ? null : (
-    <svg width={width} height={height}>
-      <GradientTealBlue id="teal"/>	
+    <svg width={width} height={height} >
+      <GradientTealBlue id="teal" />
       <rect width={width} height={height} fill="url(#teal)" rx={14} />
-      <Group top={verticalMargin / 2}>
+      <Group top={verticalMargin / 2} left={30}>
+			<AxisLeft
+            scale={yScale}
+            numTicks={5}
+            top={0}
+						tickStroke="white"
+						stroke="white"
+            tickLabelProps={(e) => ({
+              fill: "white",
+              fontSize: "11px",
+              textAnchor: "end",
+              x: -10,
+              y: yScale(e) ?? 0
+            })}
+          />
         {data.map((d) => {
           const letter = getX_Data(d);
           const barWidth = xScale.bandwidth();
@@ -65,24 +84,30 @@ const getY_Data = (d: ChartItem) => d.value
               height={barHeight}
               fill="rgba(23, 233, 217, .5)"
               onClick={() => {
-                if (events) alert(`clicked: ${JSON.stringify(Object.values(d))}`);
+                if (events)
+                  alert(`clicked: ${JSON.stringify(Object.values(d))}`);
               }}
             />
           );
         })}
-				<AxisBottom
+        <AxisBottom
           scale={xScale}
           top={yMax}
           numTicks={data.length}
-					stroke={"white"}
-					labelProps={{stroke:"white",fill:"white"}}
+          stroke={"white"}
+          labelProps={{ fill: "white" }}
           tickStroke={"white"}
-					tickLabelProps={() => ({ fill: 'white', fontSize: 11, textAnchor: 'middle' })}
+          tickLabelProps={() => ({
+            fill: "white",
+            fontSize: 11,
+            textAnchor: "middle",
+						verticalAnchor:"middle",
+            angle: 320
+          })}
         />
       </Group>
-			
     </svg>
   );
-}
+};
 
 export default BarChart;
