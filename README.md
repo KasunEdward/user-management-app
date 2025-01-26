@@ -2,8 +2,6 @@
 
 Sample React application for mananging a user list.
 
-##### Vercel URL
-[https://user-management-app-ybr2.vercel.app/](https://user-management-app-ybr2.vercel.app/)
 
 ## Prerequisites
 
